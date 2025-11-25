@@ -1,0 +1,6 @@
+course_code | hp  |  instance_id  | study_period | num_students | lecture_hours | lab_hours | seminar_hours | tutorial_hours | admin_hours | examination_hours | total_hours 
+-------------+-----+---------------+--------------+--------------+---------------+-----------+---------------+----------------+-------------+-------------------+-------------
+ CS101       | 7.5 | CS101-2025-P1 | P1           | 85           |            10 |        22 |            18 |             25 |        60.0 |            93.625 |     214.725
+ MA101       | 10  | MA101-2025-P1 | P1           | 110          |             0 |        14 |            20 |             22 |        70.0 |           111.750 |     226.950
+(2 rows)
+
