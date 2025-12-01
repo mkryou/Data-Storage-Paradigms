@@ -1,0 +1,4 @@
+ course_code | hp  |  instance_id  | first_name | last_name | job_title | lecture_hours | lab_hours | seminar_hours | tutorial_hours | admin_hours | examination_hours | total_hours 
+-------------+-----+---------------+------------+-----------+-----------+---------------+-----------+---------------+----------------+-------------+-------------------+-------------
+ CS101       | 7.5 | CS101-2025-P1 | Alice      | Johnson   | Professor |            10 |        20 |             0 |              0 |        60.0 |            93.625 |     237.625
+ CS101       | 7.5 | CS101-2025-P1 | Emily      | Clark     | Lecturer  |             0 |        20 |             0 |              0 |        60.0 |            93.625 |     201.625

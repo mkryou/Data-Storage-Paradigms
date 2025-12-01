@@ -1,0 +1,6 @@
+---------------+------------+-----------+--------------+-------
+ EMP001        | Alice      | Johnson   | P1           |     2
+ EMP002        | Robert     | Brown     | P1           |     2
+ EMP003        | Viggo      | Tingbert  | P1           |     1
+ EMP004        | Sanna      | Lindberg  | P1           |     2
+ EMP005        | Melissa    | Kryou     | P1           |     1
