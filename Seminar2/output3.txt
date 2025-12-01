@@ -1,8 +1,0 @@
-course_code | hp  |  instance_id  | study_period | num_students | first_name | last_name | job_title | lecture_hours | lab_hours | seminar_hours | tutorial_hours | admin_hours | examination_hours | total_hours 
--------------+-----+---------------+--------------+--------------+------------+-----------+-----------+---------------+-----------+---------------+----------------+-------------+-------------------+-------------
- CS101       | 7.5 | CS101-2025-P1 | P1           | 85           | Alice      | Johnson   | Professor |            10 |         0 |             0 |              0 |        60.0 |            93.625 |     163.625
- CS101       | 7.5 | CS101-2025-P1 | P1           | 85           | Melissa    | Kryou     | Lecturer  |             0 |        22 |             0 |              0 |        60.0 |            93.625 |     164.625
- CS101       | 7.5 | CS101-2025-P1 | P1           | 85           | Robert     | Brown     | Professor |             0 |        22 |             0 |              0 |        60.0 |            93.625 |     164.625
- CS101       | 7.5 | CS101-2025-P1 | P1           | 85           | Sanna      | Lindberg  | Lecturer  |             0 |        22 |             0 |              0 |        60.0 |            93.625 |     164.625
- CS101       | 7.5 | CS101-2025-P1 | P1           | 85           | Viggo      | Tingbert  | Professor |            10 |         0 |             0 |              0 |        60.0 |            93.625 |     163.625
-(5 rows)
