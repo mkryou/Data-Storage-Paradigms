@@ -1,0 +1,10 @@
+/Users/melissakryou/DataStorageParadigms/Seminar3/Seminar3/unidb/src/main/java/se/kth/iv1351/jdbcproject/controller/Controller.java
+/Users/melissakryou/DataStorageParadigms/Seminar3/Seminar3/unidb/src/main/java/se/kth/iv1351/jdbcproject/integration/UniDAO.java
+/Users/melissakryou/DataStorageParadigms/Seminar3/Seminar3/unidb/src/main/java/se/kth/iv1351/jdbcproject/integration/UniDBException.java
+/Users/melissakryou/DataStorageParadigms/Seminar3/Seminar3/unidb/src/main/java/se/kth/iv1351/jdbcproject/model/CourseInstance.java
+/Users/melissakryou/DataStorageParadigms/Seminar3/Seminar3/unidb/src/main/java/se/kth/iv1351/jdbcproject/model/CourseInstanceDTO.java
+/Users/melissakryou/DataStorageParadigms/Seminar3/Seminar3/unidb/src/main/java/se/kth/iv1351/jdbcproject/model/CourseInstanceException.java
+/Users/melissakryou/DataStorageParadigms/Seminar3/Seminar3/unidb/src/main/java/se/kth/iv1351/jdbcproject/startup/Main.java
+/Users/melissakryou/DataStorageParadigms/Seminar3/Seminar3/unidb/src/main/java/se/kth/iv1351/jdbcproject/view/CMDInterpreter.java
+/Users/melissakryou/DataStorageParadigms/Seminar3/Seminar3/unidb/src/main/java/se/kth/iv1351/jdbcproject/view/CmdLine.java
+/Users/melissakryou/DataStorageParadigms/Seminar3/Seminar3/unidb/src/main/java/se/kth/iv1351/jdbcproject/view/Command.java
