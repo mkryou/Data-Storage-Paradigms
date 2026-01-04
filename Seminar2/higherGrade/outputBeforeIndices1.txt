@@ -1,0 +1,36 @@
+---------------------------------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=4.77..5.11 rows=6 width=165) (actual time=0.521..0.531 rows=5 loops=1)
+   Group Key: course_layout.course_code, course_layout.hp, course_instance.instance_id, course_instance.study_period, course_instance.num_students
+   Batches: 1  Memory Usage: 24kB
+   ->  Hash Join  (cost=3.35..4.53 rows=6 width=52) (actual time=0.336..0.344 rows=7 loops=1)
+         Hash Cond: (planned_activity.teaching_activity_id = teaching_activity.id)
+         ->  Hash Join  (cost=2.26..3.40 rows=6 width=45) (actual time=0.082..0.089 rows=7 loops=1)
+               Hash Cond: (course_instance.course_layout_id = course_layout.id)
+               ->  Hash Join  (cost=1.15..2.26 rows=6 width=37) (actual time=0.027..0.031 rows=7 loops=1)
+                     Hash Cond: (planned_activity.course_instance_id = course_instance.id)
+                     ->  Seq Scan on planned_activity  (cost=0.00..1.08 rows=8 width=12) (actual time=0.005..0.006 rows=8 loops=1)
+                     ->  Hash  (cost=1.09..1.09 rows=5 width=33) (actual time=0.010..0.010 rows=5 loops=1)
+                           Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                           ->  Seq Scan on course_instance  (cost=0.00..1.09 rows=5 width=33) (actual time=0.004..0.005 rows=5 loops=1)
+                                 Filter: (study_year = '2025-01-01'::date)
+                                 Rows Removed by Filter: 2
+               ->  Hash  (cost=1.05..1.05 rows=5 width=16) (actual time=0.012..0.012 rows=5 loops=1)
+                     Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                     ->  Seq Scan on course_layout  (cost=0.00..1.05 rows=5 width=16) (actual time=0.007..0.008 rows=5 loops=1)
+         ->  Hash  (cost=1.04..1.04 rows=4 width=11) (actual time=0.226..0.227 rows=4 loops=1)
+               Buckets: 1024  Batches: 1  Memory Usage: 9kB
+               ->  Seq Scan on teaching_activity  (cost=0.00..1.04 rows=4 width=11) (actual time=0.014..0.015 rows=4 loops=1)
+ Planning Time: 4.092 ms
+ Execution Time: 0.923 ms
+
+
+uni=# SELECT * FROM planned_hours_view WHERE study_year = '2025-01-01';
+ course_code | hp  |  instance_id   | study_period | study_year | num_students | lecture_hours | lab_hours | seminar_hours | tutorial_hours | admin_hours | examination_hours | total_hours 
+-------------+-----+----------------+--------------+------------+--------------+---------------+-----------+---------------+----------------+-------------+-------------------+-------------
+ CS201       | 7.5 | CS201-2025-P1  | P1           | 2025-01-01 |           73 |             0 |         0 |             0 |              8 |        57.6 |            84.925 |     161.725
+ IX1500      | 7.5 | IX1500-2025-P1 | P1           | 2025-01-01 |           69 |            11 |         0 |             0 |              0 |        56.8 |            82.025 |     178.425
+ IV1351      | 7.5 | IV1351-2025-P1 | P1           | 2025-01-01 |          166 |            13 |         0 |             0 |              0 |        76.2 |           152.350 |     275.350
+ CS101       | 7.5 | CS101-2025-P1  | P1           | 2025-01-01 |           85 |            10 |        20 |             0 |              0 |        60.0 |            93.625 |     237.625
+ MA101       |  10 | MA101-2025-P1  | P1           | 2025-01-01 |          111 |             0 |         0 |            15 |              0 |        70.2 |           112.475 |     209.675
+(5 rows)
+

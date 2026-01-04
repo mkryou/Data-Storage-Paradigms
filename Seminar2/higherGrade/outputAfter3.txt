@@ -1,0 +1,14 @@
+                                                    QUERY PLAN                                                    
+------------------------------------------------------------------------------------------------------------------
+ Seq Scan on allocated_hours_view  (cost=0.00..10.45 rows=1 width=2166) (actual time=0.019..0.021 rows=3 loops=1)
+   Filter: ((study_year = '2025-01-01'::date) AND ((first_name)::text = 'Alice'::text))
+   Rows Removed by Filter: 7
+ Planning Time: 0.087 ms
+ Execution Time: 0.043 ms
+(5 rows)
+
+
+course_code | hp  |  instance_id  | study_period | study_year | first_name | last_name | job_title | lecture_hours | lab_hours | seminar_hours | tutorial_hours | admin_hours | examination_hours | total_hours 
+-------------+-----+---------------+--------------+------------+------------+-----------+-----------+---------------+-----------+---------------+----------------+-------------+-------------------+-------------
+ CS101       | 7.5 | CS101-2025-P1 | P1           | 2025-01-01 | Alice      | Johnson   | Professor |            10 |         0 |             0 |              0 |        60.0 |            93.625 |     189.625
+(1 row)

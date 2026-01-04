@@ -1,0 +1,39 @@
+                                                          QUERY PLAN                                                                                 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=16.47..16.47 rows=2 width=116) (actual time=0.205..0.209 rows=3 loops=1)
+   Sort Key: (((((sum(allocated_hours_view.total_hours)) - p.total_hours) / p.total_hours) * '100'::numeric)) DESC
+   Sort Method: quicksort  Memory: 25kB
+   ->  Hash Join  (cost=15.53..16.46 rows=2 width=116) (actual time=0.194..0.200 rows=3 loops=1)
+         Hash Cond: ((allocated_hours_view.instance_id)::text = (p.instance_id)::text)
+         Join Filter: (abs((((sum(allocated_hours_view.total_hours)) - p.total_hours) / p.total_hours)) > 0.15)
+         ->  HashAggregate  (cost=10.53..10.90 rows=30 width=666) (actual time=0.015..0.016 rows=4 loops=1)
+               Group Key: allocated_hours_view.course_code, allocated_hours_view.instance_id
+               Batches: 1  Memory Usage: 24kB
+               ->  Seq Scan on allocated_hours_view  (cost=0.00..10.30 rows=30 width=666) (actual time=0.004..0.005 rows=10 loops=1)
+         ->  Hash  (cost=4.93..4.93 rows=6 width=52) (actual time=0.161..0.164 rows=5 loops=1)
+               Buckets: 1024  Batches: 1  Memory Usage: 9kB
+               ->  Subquery Scan on p  (cost=4.65..4.93 rows=6 width=52) (actual time=0.152..0.160 rows=5 loops=1)
+                     ->  HashAggregate  (cost=4.65..4.87 rows=6 width=165) (actual time=0.151..0.158 rows=5 loops=1)
+                           Group Key: course_layout.course_code, course_layout.hp, course_instance.instance_id, course_instance.study_period, course_instance.num_students
+                           Batches: 1  Memory Usage: 24kB
+                           ->  Hash Join  (cost=3.35..4.53 rows=6 width=48) (actual time=0.117..0.127 rows=7 loops=1)
+                                 Hash Cond: (planned_activity.teaching_activity_id = teaching_activity.id)
+                                 ->  Hash Join  (cost=2.26..3.40 rows=6 width=45) (actual time=0.080..0.086 rows=7 loops=1)
+                                       Hash Cond: (course_instance.course_layout_id = course_layout.id)
+                                       ->  Hash Join  (cost=1.15..2.26 rows=6 width=37) (actual time=0.042..0.046 rows=7 loops=1)
+                                             Hash Cond: (planned_activity.course_instance_id = course_instance.id)
+                                             ->  Seq Scan on planned_activity  (cost=0.00..1.08 rows=8 width=12) (actual time=0.003..0.004 rows=8 loops=1)
+                                             ->  Hash  (cost=1.09..1.09 rows=5 width=33) (actual time=0.013..0.014 rows=5 loops=1)
+                                                   Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                                   ->  Seq Scan on course_instance  (cost=0.00..1.09 rows=5 width=33) (actual time=0.009..0.010 rows=5 loops=1)
+                                                         Filter: (study_year = '2025-01-01'::date)
+                                                         Rows Removed by Filter: 2
+                                       ->  Hash  (cost=1.05..1.05 rows=5 width=16) (actual time=0.031..0.031 rows=5 loops=1)
+                                             Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                             ->  Seq Scan on course_layout  (cost=0.00..1.05 rows=5 width=16) (actual time=0.004..0.006 rows=5 loops=1)
+                                 ->  Hash  (cost=1.04..1.04 rows=4 width=11) (actual time=0.029..0.030 rows=4 loops=1)
+                                       Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                       ->  Seq Scan on teaching_activity  (cost=0.00..1.04 rows=4 width=11) (actual time=0.024..0.025 rows=4 loops=1)
+ Planning Time: 0.639 ms
+ Execution Time: 0.321 ms
+(36 rows)

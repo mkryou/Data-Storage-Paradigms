@@ -1,0 +1,53 @@
+                                                                                                      QUERY PLAN                                                                                                      
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Subquery Scan on allocated_hours_view  (cost=8.93..9.05 rows=1 width=185) (actual time=0.807..0.818 rows=2 loops=1)
+   ->  GroupAggregate  (cost=8.93..9.04 rows=1 width=189) (actual time=0.806..0.815 rows=2 loops=1)
+         Group Key: course_layout.hp, course_instance.instance_id, course_instance.study_period, course_instance.num_students, person.first_name, person.last_name, job_title.job_title
+         ->  Sort  (cost=8.93..8.93 rows=1 width=76) (actual time=0.773..0.779 rows=2 loops=1)
+               Sort Key: course_layout.hp, course_instance.instance_id, course_instance.study_period, course_instance.num_students, person.first_name, person.last_name, job_title.job_title
+               Sort Method: quicksort  Memory: 25kB
+               ->  Nested Loop  (cost=3.33..8.92 rows=1 width=76) (actual time=0.229..0.247 rows=2 loops=1)
+                     Join Filter: (job_title.id = employee.job_title_id)
+                     Rows Removed by Join Filter: 1
+                     ->  Nested Loop  (cost=3.33..7.85 rows=1 width=68) (actual time=0.215..0.231 rows=2 loops=1)
+                           Join Filter: (person.id = employee.person_id)
+                           Rows Removed by Join Filter: 2
+                           ->  Nested Loop  (cost=3.33..6.74 rows=1 width=60) (actual time=0.207..0.220 rows=2 loops=1)
+                                 Join Filter: (allocation.employee_id = employee.id)
+                                 Rows Removed by Join Filter: 2
+                                 ->  Nested Loop  (cost=3.33..5.63 rows=1 width=56) (actual time=0.193..0.204 rows=2 loops=1)
+                                       Join Filter: (teaching_activity.id = planned_activity.teaching_activity_id)
+                                       Rows Removed by Join Filter: 1
+                                       ->  Hash Join  (cost=3.33..4.54 rows=1 width=49) (actual time=0.183..0.191 rows=2 loops=1)
+                                             Hash Cond: ((allocation.course_instance_id = planned_activity.course_instance_id) AND ((allocation.planned_activity)::text = (planned_activity.planned_activity)::text))
+                                             ->  Seq Scan on allocation  (cost=0.00..1.11 rows=11 width=24) (actual time=0.021..0.022 rows=11 loops=1)
+                                             ->  Hash  (cost=3.32..3.32 rows=1 width=68) (actual time=0.138..0.142 rows=2 loops=1)
+                                                   Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                                   ->  Hash Join  (cost=2.20..3.32 rows=1 width=68) (actual time=0.129..0.135 rows=2 loops=1)
+                                                         Hash Cond: (planned_activity.course_instance_id = course_instance.id)
+                                                         ->  Seq Scan on planned_activity  (cost=0.00..1.08 rows=8 width=27) (actual time=0.014..0.015 rows=8 loops=1)
+                                                         ->  Hash  (cost=2.19..2.19 rows=1 width=41) (actual time=0.098..0.101 rows=1 loops=1)
+                                                               Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                                               ->  Hash Join  (cost=1.07..2.19 rows=1 width=41) (actual time=0.089..0.093 rows=1 loops=1)
+                                                                     Hash Cond: (course_instance.course_layout_id = course_layout.id)
+                                                                     ->  Seq Scan on course_instance  (cost=0.00..1.09 rows=5 width=33) (actual time=0.021..0.022 rows=5 loops=1)
+                                                                           Filter: (study_year = '2025-01-01'::date)
+                                                                           Rows Removed by Filter: 2
+                                                                     ->  Hash  (cost=1.06..1.06 rows=1 width=16) (actual time=0.046..0.047 rows=1 loops=1)
+                                                                           Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                                                           ->  Seq Scan on course_layout  (cost=0.00..1.06 rows=1 width=16) (actual time=0.018..0.019 rows=1 loops=1)
+                                                                                 Filter: ((course_code)::text = 'CS101'::text)
+                                                                                 Rows Removed by Filter: 4
+                                       ->  Seq Scan on teaching_activity  (cost=0.00..1.04 rows=4 width=11) (actual time=0.004..0.004 rows=2 loops=2)
+                                 ->  Seq Scan on employee  (cost=0.00..1.05 rows=5 width=12) (actual time=0.006..0.006 rows=2 loops=2)
+                           ->  Seq Scan on person  (cost=0.00..1.05 rows=5 width=16) (actual time=0.003..0.003 rows=2 loops=2)
+                     ->  Seq Scan on job_title  (cost=0.00..1.03 rows=3 width=16) (actual time=0.006..0.006 rows=2 loops=2)
+ Planning Time: 7.416 ms
+ Execution Time: 1.483 ms
+
+ uni=# SELECT * FROM allocated_hours_view WHERE course_code ='CS101' AND study_year = '2025-01-01';
+ course_code | hp  |  instance_id  | study_period | study_year | first_name | last_name | job_title | lecture_hours | lab_hours | seminar_hours | tutorial_hours | admin_hours | examination_hours | total_hours 
+-------------+-----+---------------+--------------+------------+------------+-----------+-----------+---------------+-----------+---------------+----------------+-------------+-------------------+-------------
+ CS101       | 7.5 | CS101-2025-P1 | P1           | 2025-01-01 | Alice      | Johnson   | Professor |            10 |         0 |             0 |              0 |        60.0 |            93.625 |     189.625
+ CS101       | 7.5 | CS101-2025-P1 | P1           | 2025-01-01 | Emily      | Clark     | Lecturer  |             0 |        20 |             0 |              0 |        60.0 |            93.625 |     201.625
+(2 rows)

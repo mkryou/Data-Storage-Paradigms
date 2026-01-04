@@ -1,0 +1,6 @@
+                                                     QUERY PLAN                                                      
+---------------------------------------------------------------------------------------------------------------------
+ Seq Scan on allocated_teacher_view  (cost=0.00..10.40 rows=40 width=1774) (actual time=0.019..0.021 rows=4 loops=1)
+ Planning Time: 0.357 ms
+ Execution Time: 0.041 ms
+(3 rows)

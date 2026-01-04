@@ -1,0 +1,8 @@
+                                                    QUERY PLAN                                                    
+------------------------------------------------------------------------------------------------------------------
+ Seq Scan on allocated_hours_view  (cost=0.00..10.45 rows=1 width=2166) (actual time=0.048..0.050 rows=2 loops=1)
+   Filter: (((course_code)::text = 'CS101'::text) AND (study_year = '2025-01-01'::date))
+   Rows Removed by Filter: 8
+ Planning Time: 0.401 ms
+ Execution Time: 0.098 ms
+(5 rows)

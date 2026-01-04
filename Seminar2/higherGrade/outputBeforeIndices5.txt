@@ -1,0 +1,39 @@
+                                                                 QUERY PLAN                                                                  
+---------------------------------------------------------------------------------------------------------------------------------------------
+ GroupAggregate  (cost=4.67..4.82 rows=2 width=30) (actual time=0.152..0.158 rows=4 loops=1)
+   Group Key: employee.employment_id, person.first_name, person.last_name
+   Filter: (count(DISTINCT course_instance.id) > 0)
+   ->  Sort  (cost=4.67..4.69 rows=6 width=26) (actual time=0.143..0.146 rows=9 loops=1)
+         Sort Key: employee.employment_id, person.first_name, person.last_name, course_instance.id
+         Sort Method: quicksort  Memory: 25kB
+         ->  Hash Join  (cost=3.38..4.59 rows=6 width=26) (actual time=0.092..0.102 rows=9 loops=1)
+               Hash Cond: (employee.person_id = person.id)
+               ->  Hash Join  (cost=2.27..3.46 rows=6 width=18) (actual time=0.058..0.066 rows=9 loops=1)
+                     Hash Cond: (allocation.employee_id = employee.id)
+                     ->  Hash Join  (cost=1.16..2.32 rows=6 width=11) (actual time=0.023..0.028 rows=9 loops=1)
+                           Hash Cond: (allocation.course_instance_id = course_instance.id)
+                           ->  Seq Scan on allocation  (cost=0.00..1.11 rows=11 width=8) (actual time=0.003..0.005 rows=11 loops=1)
+                           ->  Hash  (cost=1.10..1.10 rows=4 width=7) (actual time=0.012..0.013 rows=5 loops=1)
+                                 Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                 ->  Seq Scan on course_instance  (cost=0.00..1.10 rows=4 width=7) (actual time=0.007..0.008 rows=5 loops=1)
+                                       Filter: (((study_period)::text = 'P1'::text) AND (study_year = '2025-01-01'::date))
+                                       Rows Removed by Filter: 2
+                     ->  Hash  (cost=1.05..1.05 rows=5 width=15) (actual time=0.029..0.029 rows=5 loops=1)
+                           Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                           ->  Seq Scan on employee  (cost=0.00..1.05 rows=5 width=15) (actual time=0.003..0.004 rows=5 loops=1)
+               ->  Hash  (cost=1.05..1.05 rows=5 width=16) (actual time=0.027..0.027 rows=5 loops=1)
+                     Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                     ->  Seq Scan on person  (cost=0.00..1.05 rows=5 width=16) (actual time=0.012..0.014 rows=5 loops=1)
+ Planning Time: 0.658 ms
+ Execution Time: 0.215 ms
+(26 rows)
+
+
+
+ employment_id | first_name | last_name | study_period | count 
+---------------+------------+-----------+--------------+-------
+ EMP001        | Alice      | Johnson   | P1           |     3
+ EMP002        | Robert     | Brown     | P1           |     2
+ EMP003        | Emily      | Clark     | P1           |     2
+ EMP004        | Daniel     | Smith     | P1           |     1
+(4 rows)
